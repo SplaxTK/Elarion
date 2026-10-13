@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `usuario` (
-  `idPlayer` int(11) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
   `nick` varchar(50) NOT NULL,
   `email` bigint(20) NOT NULL,
   `senha` varchar(100) NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE `usuario` (
 -- Índices de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`idPlayer`),
+  ADD PRIMARY KEY auto_increment (`idUsuario`),
   ADD UNIQUE KEY `nick` (`nick`),
   ADD UNIQUE KEY `email` (`email`);
 COMMIT;
