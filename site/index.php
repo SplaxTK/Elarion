@@ -7,16 +7,16 @@
         <section class="hero" id="inicio" aria-labelledby="hero-title">
             <div class="hero-shade"></div>
             <div class="hero-content">
-                <p class="eyebrow">Frase curta de destaque</p>
-                <h1 id="hero-title">Título principal<br>do negoço</h1>
-                <p class="hero-description">breve descrição do projeto.</p>
+                <p class="eyebrow">Uma nova aventura</p>
+                <h1 id="hero-title"><img class="hero-logo" src="./assents/img/logo-titulo.png" alt="Logo Elarion"></h1>
+                <p class="hero-description">Quer embarcar em uma jornada única e descobrir um mundo cheio de possibilidades?</p>
                 <div class="hero-actions">
-                    <a class="button button-primary" href="#mundo">Texto do botão 1</a>
-                    <a class="button button-outline" href="#sobre">Texto do botão 2</a>
+                    <a class="button button-primary" href="#mundo">Sobre o Mundo</a>
+                    <a class="button button-outline" href="#sobre">Sobre o Projeto</a>
                 </div>
             </div>
             <a class="scroll-cue" href="#mundo" aria-label="Rolar para a próxima seção"><span></span></a>
-            <span class="hero-caption">Frase complementar de destaque</span>
+            <span class="hero-caption">Jogo em Desenvolvimento</span>
         </section>
         <section class="content-section world-section" id="mundo" aria-labelledby="world-title">
             <div class="section-copy">

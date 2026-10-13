@@ -26,7 +26,7 @@ body {
     min-height: 76px;
     padding: 12px clamp(20px, 5vw, 76px);
     box-sizing: border-box;
-    background: rgba(26, 27, 29, 0.616);
+    background: rgba(43, 39, 34, 0.616);
     border-bottom: 1px solid rgb(255 255 255 / 10%);
     backdrop-filter: blur(12px);
     position: fixed;
@@ -167,9 +167,16 @@ body {
     overflow: hidden;
     padding: 112px 24px 80px;
     box-sizing: border-box;
-    background: #10151b url("../img/teste.jpg") center 48% / cover no-repeat;
+    background: #10151b url("../img/background.png") center 48% / cover no-repeat;
     color: #fff;
     text-align: center;
+}
+
+.hero-logo {
+    width: 540px;
+    height: 330px;
+    margin-bottom: 24px;
+    border-radius: 50%;
 }
 
 .hero-shade {
