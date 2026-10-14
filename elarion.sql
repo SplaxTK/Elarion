@@ -31,7 +31,6 @@ START TRANSACTION;
 --
 -- Remove a estrutura legada, incompatível com a autenticação atual.
 --
-DROP TABLE IF EXISTS `usuario`;
 
 CREATE TABLE `usuarios` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
