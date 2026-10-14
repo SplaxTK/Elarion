@@ -1,18 +1,16 @@
 <?php
-// Configurações do banco de dados
 $host = 'localhost';
-$user = 'root'; // Seu usuário do MySQL
-$password = ''; // Sua senha do MySQL
-$database = 'pi'; // Nome do banco que você criou no phpMyAdmin
+$user = 'root';
+$password = '';
+$database = 'elarion';
 
-// Criar conexão
 $conn = new mysqli($host, $user, $password, $database);
 
-// Verificar conexão
-if ($conn->connect_error) {
-    die("Erro na conexão: " . $conn->connect_error);
+if ($conn->connect_errno) {
+    $conn = null;
 }
 
-// Definir charset para UTF-8
-$conn->set_charset("utf8");
+if ($conn) {
+    $conn->set_charset('utf8');
+}
 ?>

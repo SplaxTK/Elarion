@@ -2,6 +2,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.querySelector('[data-auth-overlay]');
     const dialog = document.querySelector('#auth-dialog');
     const openButton = document.querySelector('[data-auth-open]');
+    const userMenuButton = document.querySelector('[data-user-menu-button]');
+    const userMenu = document.querySelector('[data-user-menu]');
+    const logoutDialog = document.querySelector('[data-logout-dialog]');
+    const logoutOpenButton = document.querySelector('[data-logout-open]');
+    const logoutCloseButton = document.querySelector('[data-logout-close]');
+    let previousFocus = null;
+
+    const closeUserMenu = () => {
+        if (!userMenu || !userMenuButton) {
+            return;
+        }
+        userMenu.hidden = true;
+        userMenuButton.setAttribute('aria-expanded', 'false');
+    };
+
+    const openUserMenu = () => {
+        if (!userMenu || !userMenuButton) {
+            return;
+        }
+        const isOpen = userMenu.hidden === false;
+        userMenu.hidden = isOpen;
+        userMenuButton.setAttribute('aria-expanded', String(!isOpen));
+    };
+
+    userMenuButton?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (!userMenu) {
+            return;
+        }
+        const shouldOpen = userMenu.hidden;
+        userMenu.hidden = !shouldOpen;
+        userMenuButton.setAttribute('aria-expanded', String(shouldOpen));
+    });
+
+    document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) {
+            return;
+        }
+
+        if (userMenu && userMenuButton && !userMenu.contains(target) && !userMenuButton.contains(target)) {
+            closeUserMenu();
+        }
+
+        if (logoutDialog && !logoutDialog.contains(target) && !logoutOpenButton?.contains(target)) {
+            logoutDialog.hidden = true;
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeUserMenu();
+            if (logoutDialog) {
+                logoutDialog.hidden = true;
+            }
+        }
+    });
+
+    logoutOpenButton?.addEventListener('click', () => {
+        if (logoutDialog) {
+            logoutDialog.hidden = false;
+        }
+        closeUserMenu();
+    });
+
+    logoutCloseButton?.addEventListener('click', () => {
+        if (logoutDialog) {
+            logoutDialog.hidden = true;
+        }
+    });
 
     if (!overlay || !dialog || !openButton) {
         return;
@@ -9,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeButton = dialog.querySelector('[data-auth-close]');
     const panels = dialog.querySelectorAll('[data-auth-panel]');
-    let previousFocus = null;
 
     const showPanel = (name) => {
         panels.forEach((panel) => {
@@ -25,9 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const openDialog = () => {
+    const openDialog = (panel = 'login') => {
         previousFocus = document.activeElement;
-        showPanel('login');
+        showPanel(panel);
         overlay.hidden = false;
         document.body.classList.add('auth-open');
         dialog.focus();
@@ -41,7 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    openButton.addEventListener('click', openDialog);
+    if (window.ELARION_AUTH_OPEN) {
+        openDialog(window.ELARION_AUTH_OPEN);
+    }
+
+    openButton.addEventListener('click', () => {
+        openDialog();
+    });
     closeButton?.addEventListener('click', closeDialog);
 
     overlay.addEventListener('click', (event) => {

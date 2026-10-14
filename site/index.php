@@ -1,9 +1,17 @@
 <?php
     require_once './includes/head.php';
+    $flashMessages = getFlash();
 ?>
 <body>
     <?php require_once './includes/header.php'; ?>
     <main>
+        <?php if ($flashMessages): ?>
+            <div class="site-flash-messages" aria-live="polite">
+                <?php foreach ($flashMessages as $flash): ?>
+                    <div class="notice notice-<?= htmlspecialchars($flash['type']) ?>" role="<?= $flash['type'] === 'error' ? 'alert' : 'status' ?>"><?= htmlspecialchars($flash['message']) ?></div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
         <section class="hero" id="inicio" aria-labelledby="hero-title">
             <div class="hero-shade"></div>
             <div class="hero-content">
@@ -30,7 +38,7 @@
 
         <section class="content-section features-section" id="recursos" aria-labelledby="features-title">
             <div class="section-heading">
-                <p class="eyebrow">Categoria ou chamada da seção</p>
+                <p class="eyebrow"></p>
                 <h2 id="features-title">Título dos destaques</h2>
                 <p>Apresente aqui os assuntos ou recursos que deseja destacar.</p>
             </div>

@@ -16,7 +16,7 @@ if (getenv('JWT_SECRET_KEY') === false && !empty($env['JWT_SECRET_KEY'])) {
 
 $host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? 'localhost');
 $port = getenv('DB_PORT') ?: ($env['DB_PORT'] ?? '3306');
-$db   = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'flowup');
+$db   = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'elarion');
 $user = getenv('DB_USER') ?: ($env['DB_USER'] ?? 'root');
 
 $pass = getenv('DB_PASSWORD');
@@ -35,8 +35,11 @@ $options = [
     PDO::ATTR_EMULATE_PREPARES => false,
 ];
 
+$pdo = null;
+
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
-    exit('Erro MySQL: ' . $e->getMessage());
+    $pdo = null;
+    error_log('MySQL connection error: ' . $e->getMessage());
 }
