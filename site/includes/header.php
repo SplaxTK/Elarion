@@ -40,7 +40,7 @@ $homeLink = static fn (string $section): string => $isHomePage ? '#' . $section 
                     <a href="<?= htmlspecialchars(relativeSiteUrl('profile.php')) ?>" role="menuitem">Meu perfil</a>
                     <a href="<?= htmlspecialchars(relativeSiteUrl('configuracoes.php')) ?>" role="menuitem">Configurações da conta</a>
                     <?php if (isAdmin()): ?>
-                        <a href="<?= htmlspecialchars(relativeSiteUrl('crud/index.php')) ?>" target="_blank" rel="noopener noreferrer" role="menuitem">Painel de admin</a>
+                        <a href="<?= htmlspecialchars(relativeSiteUrl('crud/index.php')) ?>" rel="noopener noreferrer" role="menuitem">Painel de admin</a>
                     <?php endif; ?>
                     <button type="button" class="user-menu-logout" data-logout-open role="menuitem">Sair da conta</button>
                 </div>

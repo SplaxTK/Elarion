@@ -29,32 +29,36 @@ function ensureSchema(): void
         return;
     }
 
-    $pdo->exec("CREATE TABLE IF NOT EXISTS usuarios (
-        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        username VARCHAR(50) NOT NULL,
-        display_name VARCHAR(80) NOT NULL,
-        email VARCHAR(150) NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
-        role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
-        status ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        last_login_at TIMESTAMP NULL DEFAULT NULL,
-        PRIMARY KEY (id),
-        UNIQUE KEY unique_username (username),
-        UNIQUE KEY unique_email (email)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    try {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS usuarios (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            username VARCHAR(50) NOT NULL,
+            display_name VARCHAR(80) NOT NULL,
+            email VARCHAR(150) NOT NULL,
+            password_hash VARCHAR(255) NOT NULL,
+            role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+            status ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            last_login_at TIMESTAMP NULL DEFAULT NULL,
+            PRIMARY KEY (id),
+            UNIQUE KEY unique_username (username),
+            UNIQUE KEY unique_email (email)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-    $pdo->exec("CREATE TABLE IF NOT EXISTS admin_actions (
-        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        actor_id INT UNSIGNED NOT NULL,
-        action VARCHAR(120) NOT NULL,
-        detail TEXT NULL,
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id),
-        KEY idx_actor_id (actor_id),
-        CONSTRAINT fk_admin_actions_actor FOREIGN KEY (actor_id) REFERENCES usuarios(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $pdo->exec("CREATE TABLE IF NOT EXISTS admin_actions (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            actor_id INT UNSIGNED NOT NULL,
+            action VARCHAR(120) NOT NULL,
+            detail TEXT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY idx_actor_id (actor_id),
+            CONSTRAINT fk_admin_actions_actor FOREIGN KEY (actor_id) REFERENCES usuarios(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    } catch (PDOException $e) {
+        error_log('[elarion][db] ensureSchema falhou: ' . $e->getMessage());
+    }
 }
 
 function currentUser(): ?array
@@ -91,7 +95,7 @@ function isAdminEmail(string $email): bool
 {
     $adminEmails = array_map(
         static fn (string $configuredEmail): string => strtolower(trim($configuredEmail)),
-        FLOWUP_ADMIN_EMAILS,
+        ELARION_ADMIN_EMAILS,
     );
 
     return in_array(strtolower(trim($email)), $adminEmails, true);

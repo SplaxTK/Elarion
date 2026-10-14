@@ -48,7 +48,7 @@ $flashMessages = getFlash();
             <div class="profile-actions">
                 <a class="button button-primary" href="./configuracoes.php">Editar perfil</a>
                 <?php if (isAdmin()): ?>
-                    <a class="button button-outline" href="./crud/index.php" target="_blank" rel="noopener noreferrer">Painel de admin</a>
+                    <a class="button button-outline" href="./crud/index.php" rel="noopener noreferrer">Painel de admin</a>
                 <?php endif; ?>
             </div>
         </section>
