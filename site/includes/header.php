@@ -121,7 +121,7 @@ $homeLink = static fn (string $section): string => $isHomePage ? '#' . $section 
             <?php endif; ?>
             <label class="auth-terms">
                 <input type="checkbox" name="aceite_termos" required>
-                <span>Li e concordo com os <a href="./termos/termos.php">Termos de Uso</a> e a <a href="./termos/politica.php">Política de Privacidade</a>.</span>
+                <span>Li e concordo com os <a href="<?= htmlspecialchars(relativeSiteUrl('termos/termos.php'), ENT_QUOTES, 'UTF-8') ?>">Termos de Uso</a> e a <a href="<?= htmlspecialchars(relativeSiteUrl('termos/politica.php'), ENT_QUOTES, 'UTF-8') ?>">Política de Privacidade</a>.</span>
             </label>
             <?php if (($authFormState['panel'] ?? '') === 'register' && isset($authFormErrors['aceite_termos'])): ?>
                 <p class="auth-field-error" role="alert"><?= htmlspecialchars($authFormErrors['aceite_termos']) ?></p>

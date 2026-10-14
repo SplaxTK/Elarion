@@ -65,9 +65,10 @@ if ($user['status'] !== 'ACTIVE') {
     redirect('../index.php');
 }
 
+session_regenerate_id(true);
 $_SESSION['user_id'] = (int) $user['id'];
 $_SESSION['user_username'] = $user['username'];
-$_SESSION['user_display_name'] = $user['username'];
+$_SESSION['user_display_name'] = $user['display_name'];
 $_SESSION['user_email'] = $user['email'];
 $_SESSION['user_role'] = isAdminEmail($user['email']) ? 'ADMIN' : 'USER';
 $_SESSION['user_status'] = $user['status'];

@@ -106,6 +106,7 @@ $statement->execute([
 ]);
 
 $userId = (int) $pdo->lastInsertId();
+session_regenerate_id(true);
 $_SESSION['user_id'] = $userId;
 $_SESSION['user_username'] = $username;
 $_SESSION['user_display_name'] = $username;

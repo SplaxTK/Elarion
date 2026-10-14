@@ -39,6 +39,11 @@ if (!passwordStrength($password) || strlen($password) < 6) {
 
 ensureSchema();
 
+if (!$pdo) {
+    fwrite(STDERR, 'Não foi possível conectar ao banco de dados. Verifique as configurações em .env.' . PHP_EOL);
+    exit(1);
+}
+
 $existing = $pdo->prepare('SELECT id, role FROM usuarios WHERE username = :username OR email = :email LIMIT 1');
 $existing->execute([
     ':username' => $username,

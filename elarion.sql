@@ -12,7 +12,7 @@ SET time_zone = "+00:00";
 
 CREATE DATABASE IF NOT EXISTS `elarion`
   DEFAULT CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;
+  COLLATE utf8mb4_unicode_ci;
 USE `elarion`;
 
 START TRANSACTION;
@@ -29,30 +29,36 @@ START TRANSACTION;
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuario`
+-- Remove a estrutura legada, incompatível com a autenticação atual.
 --
+DROP TABLE IF EXISTS `usuario`;
 
-CREATE TABLE `usuario` (
-  `idUsuario` int(11) NOT NULL,
-  `nick` varchar(50) NOT NULL,
-  `email` bigint(20) NOT NULL,
-  `senha` varchar(100) NOT NULL,
-  `DtRegistro` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `level` int(11) NOT NULL,
-  `gold` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `usuarios` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `display_name` varchar(80) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `role` enum('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+  `status` enum('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `last_login_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_username` (`username`),
+  UNIQUE KEY `unique_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Índices para tabelas despejadas
---
-
---
--- Índices de tabela `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY auto_increment (`idUsuario`),
-  ADD UNIQUE KEY `nick` (`nick`),
-  ADD UNIQUE KEY `email` (`email`);
+CREATE TABLE `admin_actions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `actor_id` int unsigned NOT NULL,
+  `action` varchar(120) NOT NULL,
+  `detail` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_actor_id` (`actor_id`),
+  CONSTRAINT `fk_admin_actions_actor` FOREIGN KEY (`actor_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -68,7 +68,7 @@ function currentUser(): ?array
     return [
         'id' => (int) ($_SESSION['user_id'] ?? 0),
         'username' => (string) ($_SESSION['user_username'] ?? ''),
-        'display_name' => (string) ($_SESSION['user_username'] ?? ''),
+        'display_name' => (string) ($_SESSION['user_display_name'] ?? $_SESSION['user_username'] ?? ''),
         'email' => $email,
         'role' => isAdminEmail($email) ? 'ADMIN' : 'USER',
         'status' => strtoupper((string) ($_SESSION['user_status'] ?? 'ACTIVE')),
@@ -128,7 +128,7 @@ function getFlash(): array
     return $flash;
 }
 
-function redirect(string $path): void
+function redirect(string $path): never
 {
     header('Location: ' . $path, true, 302);
     exit;
@@ -166,6 +166,26 @@ function requireAuth(): void
         setFlash('error', 'Faça login para continuar.');
         redirect(relativeSiteUrl('index.php'));
     }
+
+    global $pdo;
+    if (!$pdo) {
+        setFlash('error', 'Não foi possível validar sua sessão. Tente novamente mais tarde.');
+        redirect(relativeSiteUrl('index.php'));
+    }
+
+    $user = getUserById((int) $_SESSION['user_id']);
+    if (!$user || strtoupper((string) $user['status']) !== 'ACTIVE') {
+        $_SESSION = [];
+        session_regenerate_id(true);
+        setFlash('error', 'Sua conta está inativa ou não existe mais. Fale com a administração.');
+        redirect(relativeSiteUrl('index.php'));
+    }
+
+    $_SESSION['user_username'] = $user['username'];
+    $_SESSION['user_display_name'] = $user['display_name'];
+    $_SESSION['user_email'] = $user['email'];
+    $_SESSION['user_role'] = isAdminEmail($user['email']) ? 'ADMIN' : 'USER';
+    $_SESSION['user_status'] = $user['status'];
 }
 
 function requireAdmin(): void

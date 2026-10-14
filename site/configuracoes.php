@@ -9,6 +9,11 @@ $currentUser = currentUser();
 $flashMessages = getFlash();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!$pdo) {
+        setFlash('error', 'Não foi possível conectar ao banco de dados. Tente novamente mais tarde.');
+        redirect('configuracoes.php');
+    }
+
     $token = $_POST['csrf_token'] ?? '';
     if (!validateCsrf($token)) {
         setFlash('error', 'Token inválido. Tente novamente.');
@@ -45,10 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    $statement = $pdo->prepare('UPDATE usuarios SET display_name = :display_name, email = :email, updated_at = CURRENT_TIMESTAMP' . ($newPassword !== '' ? ', password_hash = :password_hash' : '') . ' WHERE id = :id');
+    $role = isAdminEmail($email) ? 'ADMIN' : 'USER';
+    $statement = $pdo->prepare('UPDATE usuarios SET display_name = :display_name, email = :email, role = :role, updated_at = CURRENT_TIMESTAMP' . ($newPassword !== '' ? ', password_hash = :password_hash' : '') . ' WHERE id = :id');
     $params = [
-        ':display_name' => $currentUser['username'],
-        ':email' => $email,
+        ':display_name' => $currentUser['display_name'],
+        ':email' => strtolower($email),
+        ':role' => $role,
         ':id' => $currentUser['id'],
     ];
 
@@ -57,8 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $statement->execute($params);
-    $_SESSION['user_display_name'] = $currentUser['username'];
-    $_SESSION['user_email'] = $email;
+    $_SESSION['user_display_name'] = $currentUser['display_name'];
+    $_SESSION['user_email'] = strtolower($email);
+    $_SESSION['user_role'] = $role;
 
     setFlash('success', 'Perfil atualizado com sucesso.');
     redirect('configuracoes.php');

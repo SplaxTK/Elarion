@@ -7,6 +7,7 @@ require_once __DIR__ . '/auth.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elarion</title>
+    <link height="32" width="32" rel="icon" type="image/png" href="<?= htmlspecialchars(relativeSiteUrl('assents/img/logo-elarion.png'), ENT_QUOTES, 'UTF-8') ?>">
     <link rel="stylesheet" href="<?= htmlspecialchars(relativeSiteUrl('assents/css/style.css'), ENT_QUOTES, 'UTF-8') ?>">
     <script src="<?= htmlspecialchars(relativeSiteUrl('assents/js/script.js'), ENT_QUOTES, 'UTF-8') ?>" defer></script>
 </head>

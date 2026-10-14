@@ -5,6 +5,11 @@ declare(strict_types=1);
 require_once __DIR__ . '/../includes/auth.php';
 requireAdmin();
 
+if (!$pdo) {
+    setFlash('error', 'Não foi possível conectar ao banco de dados. Tente novamente mais tarde.');
+    redirect('../index.php');
+}
+
 $searchTerm = trim((string) ($_GET['q'] ?? ''));
 $roleFilter = in_array($_GET['role'] ?? '', ['USER', 'ADMIN'], true) ? $_GET['role'] : 'ALL';
 $statusFilter = in_array($_GET['status'] ?? '', ['ACTIVE', 'INACTIVE'], true) ? $_GET['status'] : 'ALL';
@@ -87,8 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $newRole = isAdminEmail($userRecord['email']) ? 'ADMIN' : 'USER';
 
-    if ((int) $userRecord['id'] === (int) $currentUser['id'] && $newRole !== 'ADMIN') {
-        setFlash('error', 'Você não pode remover o próprio acesso de administrador.');
+    if ((int) $userRecord['id'] === (int) $currentUser['id'] && ($newRole !== 'ADMIN' || $newStatus !== 'ACTIVE')) {
+        setFlash('error', 'Você não pode remover nem desativar o próprio acesso de administrador.');
         redirect('index.php');
     }
 
