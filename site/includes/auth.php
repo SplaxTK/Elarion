@@ -2,7 +2,31 @@
 
 declare(strict_types=1);
 
+require_once dirname(__DIR__, 2) . '/config/database.php';
+require_once dirname(__DIR__, 2) . '/config/admin_acounts.php';
+
 if (session_status() === PHP_SESSION_NONE) {
+    if ($pdo instanceof PDO) {
+        require_once __DIR__ . '/mysql-session-handler.php';
+
+        try {
+            $pdo->exec("CREATE TABLE IF NOT EXISTS elarion_sessions (
+                session_id VARCHAR(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+                payload MEDIUMBLOB NOT NULL,
+                expires_at BIGINT UNSIGNED NOT NULL,
+                PRIMARY KEY (session_id),
+                KEY idx_expires_at (expires_at)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        } catch (PDOException $e) {
+            error_log('[elarion][session] criação da tabela de sessões falhou: ' . $e->getMessage());
+            throw $e;
+        }
+
+        session_set_save_handler(new MySqlSessionHandler($pdo), true);
+    } else {
+        error_log('[elarion][session] banco indisponível; sessões estarão limitadas à instância atual.');
+    }
+
     $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['SERVER_PORT'] ?? '') === '443');
 
     session_set_cookie_params([
@@ -17,9 +41,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_name('elarion_session');
     session_start();
 }
-
-require_once dirname(__DIR__, 2) . '/config/database.php';
-require_once dirname(__DIR__, 2) . '/config/admin_acounts.php';
 
 function ensureSchema(): void
 {
