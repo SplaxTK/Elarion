@@ -48,12 +48,18 @@ if (strlen($password) < 6) {
     redirect('../index.php');
 }
 
-$statement = $pdo->prepare('SELECT * FROM usuarios WHERE LOWER(username) = LOWER(:username) OR LOWER(email) = LOWER(:email) LIMIT 1');
-$statement->execute([
-    ':username' => $identifier,
-    ':email' => $identifier,
-]);
-$user = $statement->fetch(PDO::FETCH_ASSOC);
+try {
+    $statement = $pdo->prepare('SELECT * FROM usuarios WHERE LOWER(username) = LOWER(:username) OR LOWER(email) = LOWER(:email) LIMIT 1');
+    $statement->execute([
+        ':username' => $identifier,
+        ':email' => $identifier,
+    ]);
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log('[elarion][auth][login] consulta de usuário falhou: ' . $e->getMessage());
+    rememberAuthForm('login', ['identificador' => $identifier], ['_form' => 'Não foi possível processar o login. Tente novamente mais tarde.']);
+    redirect('../index.php');
+}
 
 if (!$user || !password_verify($password, $user['password_hash'])) {
     rememberAuthForm('login', ['identificador' => $identifier], ['senha' => 'Usuário/e-mail ou senha inválidos.']);
@@ -65,18 +71,25 @@ if ($user['status'] !== 'ACTIVE') {
     redirect('../index.php');
 }
 
+$userRole = isAdminEmail($user['email']) ? 'ADMIN' : 'USER';
+try {
+    $pdo->prepare('UPDATE usuarios SET last_login_at = CURRENT_TIMESTAMP, role = :role WHERE id = :id')->execute([
+        ':role' => $userRole,
+        ':id' => $user['id'],
+    ]);
+} catch (PDOException $e) {
+    error_log('[elarion][auth][login] atualização do último login falhou: ' . $e->getMessage());
+    rememberAuthForm('login', ['identificador' => $identifier], ['_form' => 'Não foi possível processar o login. Tente novamente mais tarde.']);
+    redirect('../index.php');
+}
+
 session_regenerate_id(true);
 $_SESSION['user_id'] = (int) $user['id'];
 $_SESSION['user_username'] = $user['username'];
 $_SESSION['user_display_name'] = $user['display_name'];
 $_SESSION['user_email'] = $user['email'];
-$_SESSION['user_role'] = isAdminEmail($user['email']) ? 'ADMIN' : 'USER';
+$_SESSION['user_role'] = $userRole;
 $_SESSION['user_status'] = $user['status'];
-
-$pdo->prepare('UPDATE usuarios SET last_login_at = CURRENT_TIMESTAMP, role = :role WHERE id = :id')->execute([
-    ':role' => isAdminEmail($user['email']) ? 'ADMIN' : 'USER',
-    ':id' => $user['id'],
-]);
 
 clearAuthForm();
 setFlash('success', 'Login realizado com sucesso.');

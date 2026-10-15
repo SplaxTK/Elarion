@@ -74,13 +74,20 @@ if (!passwordStrength($password) || strlen($password) < 6) {
     redirect('../index.php');
 }
 
-$duplicate = $pdo->prepare('SELECT username, email FROM usuarios WHERE LOWER(username) = LOWER(:username) OR LOWER(email) = LOWER(:email) LIMIT 1');
-$duplicate->execute([
-    ':username' => $username,
-    ':email' => $email,
-]);
+try {
+    $duplicate = $pdo->prepare('SELECT username, email FROM usuarios WHERE LOWER(username) = LOWER(:username) OR LOWER(email) = LOWER(:email) LIMIT 1');
+    $duplicate->execute([
+        ':username' => $username,
+        ':email' => $email,
+    ]);
+    $duplicateUser = $duplicate->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log('[elarion][auth][cadastro] verificação de usuário duplicado falhou: ' . $e->getMessage());
+    rememberAuthForm('register', ['usuario' => $username, 'email' => $email], ['_form' => 'Não foi possível processar o cadastro. Tente novamente mais tarde.']);
+    redirect('../index.php');
+}
 
-if ($duplicateUser = $duplicate->fetch(PDO::FETCH_ASSOC)) {
+if ($duplicateUser) {
     $usernameTaken = strcasecmp($duplicateUser['username'], $username) === 0;
     $emailTaken = strcasecmp($duplicateUser['email'], $email) === 0;
     $errors = [];
@@ -95,17 +102,24 @@ if ($duplicateUser = $duplicate->fetch(PDO::FETCH_ASSOC)) {
 }
 
 $userRole = isAdminEmail($email) ? 'ADMIN' : 'USER';
-$statement = $pdo->prepare('INSERT INTO usuarios (username, display_name, email, password_hash, role, status) VALUES (:username, :display_name, :email, :password_hash, :role, :status)');
-$statement->execute([
-    ':username' => $username,
-    ':display_name' => $displayName,
-    ':email' => strtolower($email),
-    ':password_hash' => password_hash($password, PASSWORD_DEFAULT),
-    ':role' => $userRole,
-    ':status' => 'ACTIVE',
-]);
+try {
+    $statement = $pdo->prepare('INSERT INTO usuarios (username, display_name, email, password_hash, role, status) VALUES (:username, :display_name, :email, :password_hash, :role, :status)');
+    $statement->execute([
+        ':username' => $username,
+        ':display_name' => $displayName,
+        ':email' => strtolower($email),
+        ':password_hash' => password_hash($password, PASSWORD_DEFAULT),
+        ':role' => $userRole,
+        ':status' => 'ACTIVE',
+    ]);
 
-$userId = (int) $pdo->lastInsertId();
+    $userId = (int) $pdo->lastInsertId();
+} catch (PDOException $e) {
+    error_log('[elarion][auth][cadastro] criação de usuário falhou: ' . $e->getMessage());
+    rememberAuthForm('register', ['usuario' => $username, 'email' => $email], ['_form' => 'Não foi possível processar o cadastro. Tente novamente mais tarde.']);
+    redirect('../index.php');
+}
+
 session_regenerate_id(true);
 $_SESSION['user_id'] = $userId;
 $_SESSION['user_username'] = $username;
