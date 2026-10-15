@@ -28,53 +28,55 @@
         </section>
         <section class="content-section world-section" id="mundo" aria-labelledby="world-title">
             <div class="section-copy">
-                <p class="eyebrow">Categoria ou chamada da seção</p>
-                <h2 id="world-title">Título sobre o mundo</h2>
-                <p>Descreva aqui o mundo, a história ou o tema do projeto.</p>
-                <a class="text-link" href="#recursos">Texto do link para outra seção <span aria-hidden="true">→</span></a>
+                <p class="eyebrow">Sobre o Mundo</p>
+                <h2 id="world-title">O Mundo de Elarion</h2>
+                <p>Explore o vasto universo de Elarion, onde mitos e realidade se entrelaçam em uma experiência inesquecível, um mundo repleto de aventuras e descobertas nesse universo medieval e mágico.</p>
+                <a class="text-link" href="#recursos">Mais Sobre o Projeto <span aria-hidden="true">→</span></a>
             </div>
             <div class="world-image" role="img" aria-label="Descreva a imagem desta seção"></div>
         </section>
 
         <section class="content-section features-section" id="recursos" aria-labelledby="features-title">
             <div class="section-heading">
-                <p class="eyebrow"></p>
-                <h2 id="features-title">Título dos destaques</h2>
-                <p>Apresente aqui os assuntos ou recursos que deseja destacar.</p>
+                <p class="eyebrow">Projeto Elarion</p>
+                <h2 id="features-title">Características Principais</h2>
+                <p>Nosso trabalho foi feito a partir do Projeto Integrador, com finalidade de desenvolver um jogo com temática das ODS 1 e 4.</p>
             </div>
             <div class="feature-grid">
                 <article class="feature-card">
                     <span class="feature-number">01</span>
-                    <h3>Título do destaque 1</h3>
-                    <p>Descreva aqui o primeiro destaque.</p>
+                    <h3>Engine</h3>
+                    <p>Foi desenvolvido com GameMaker Studio 2, uma plataforma de desenvolvimento de jogos com a linguagem de programação GML.</p>
                 </article>
                 <article class="feature-card">
                     <span class="feature-number">02</span>
-                    <h3>Título do destaque 2</h3>
-                    <p>Descreva aqui o segundo destaque.</p>
+                    <h3>Ferramentas</h3>
+                    <p>Para a criação da arte e animações, foram utilizadas ferramentas de edição como Cupcut e gerações de imagem por IA.</p>
                 </article>
                 <article class="feature-card">
                     <span class="feature-number">03</span>
-                    <h3>Título do destaque 3</h3>
-                    <p>Descreva aqui o terceiro destaque.</p>
+                    <h3>Temática</h3>
+                    <p>O jogo aborda temas relacionados às ODS 1 e 4, promovendo conscientização sobre a pobreza e a educação.</p>
                 </article>
             </div>
         </section>
 
         <section class="news-section" id="novidades" aria-labelledby="news-title">
             <div class="news-content">
-                <p class="eyebrow">Categoria ou chamada da seção</p>
-                <h2 id="news-title">Título das novidades</h2>
+                <p class="eyebrow">Jogo</p>
+                <h2 id="news-title">Novidades sobre o Jogo</h2>
                 <p>Escreva aqui uma notícia, atualização ou informação importante.</p>
-                <a class="button button-outline" href="#sobre">Texto do botão ou link</a>
+                <a class="button button-outline" href="#">Sobre o Jogo</a>
             </div>
         </section>
 
         <section class="about-section" id="sobre" aria-labelledby="about-title">
-            <p class="eyebrow">Categoria ou chamada da seção</p>
-            <h2 id="about-title">Título sobre o projeto</h2>
-            <p>Conte aqui sobre o projeto, seus objetivos ou quem está por trás dele.</p>
-            <a class="button button-primary" href="#inicio">Texto do botão para voltar ao início</a>
+            <p class="eyebrow">Sobre</p>
+            <h2 id="about-title">Desenvolvedores</h2>
+            <p>Ana Clara Narloch Meiners</p>
+            <p>Juliana da Silva Bastos</p>
+            <p>Luiza Vittória Cardoso</p>
+            <a class="button button-primary" href="#inicio">Voltar ao Início</a>
         </section>
     </main>
     <footer class="site-footer">
