@@ -20,7 +20,7 @@
                 <p class="hero-description">Quer embarcar em uma jornada única e descobrir um mundo cheio de possibilidades?</p>
                 <div class="hero-actions">
                     <a class="button button-primary" href="#mundo">Sobre o Mundo</a>
-                    <a class="button button-outline" href="#sobre">Sobre o Projeto</a>
+                    <a class="button button-outline" href="#equipe">Equipe</a>
                 </div>
             </div>
             <a class="scroll-cue" href="#mundo" aria-label="Rolar para a próxima seção"><span></span></a>
@@ -40,8 +40,7 @@
             <div class="section-heading">
                 <p class="eyebrow">Projeto Elarion</p>
                 <h2 id="features-title">Características Principais</h2>
-                <p>Nosso trabalho foi feito a partir do Projeto Integrador, com finalidade de desenvolver um jogo com temática das ODS 1 e 4.</p>
-            </div>
+                </div>
             <div class="feature-grid">
                 <article class="feature-card">
                     <span class="feature-number">01</span>
@@ -65,13 +64,13 @@
             <div class="news-content">
                 <p class="eyebrow">Jogo</p>
                 <h2 id="news-title">Novidades sobre o Jogo</h2>
-                <p>Escreva aqui uma notícia, atualização ou informação importante.</p>
-                <a class="button button-outline" href="#">Sobre o Jogo</a>
+                <p>Versão 1.0 disponível para download!</p>
+                <a class="button button-outline" href="index.php" target="_blank">Sobre o Jogo</a>
             </div>
         </section>
 
-        <section class="about-section" id="sobre" aria-labelledby="about-title">
-            <p class="eyebrow">Sobre</p>
+        <section class="about-section" id="equipe" aria-labelledby="about-title">
+            <p class="eyebrow">Equipe</p>
             <h2 id="about-title">Desenvolvedores</h2>
             <p>Ana Clara Narloch Meiners</p>
             <p>Juliana da Silva Bastos</p>
@@ -81,7 +80,10 @@
     </main>
     <footer class="site-footer">
         <a class="site-logo" href="#inicio">ELARION</a>
-        <p>Um novo mundo está por vir.</p>
+        <p>&copy; 2026 Elarion. Todos os direitos reservados.</p>
+        <a class="button button-outline" href="https://portal.sc.senac.br/" target="_blank">
+            <img src="./assents/images/senac-logo.png" alt="Portal do SENAC">
+        </a>
         <div class="footer-links">
             <a href="./termos/termos.php">Termos de Uso</a>
             <a href="./termos/politica.php">Política de Privacidade</a>
