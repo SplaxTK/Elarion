@@ -54,12 +54,22 @@ body.interior-page {
 }
 
 .site-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: #f5f1e8;
     font-family: Georgia, "Times New Roman", serif;
     font-size: 25px;
     font-weight: 700;
     letter-spacing: 0.2em;
     text-decoration: none;
+}
+
+.site-logo-icon {
+    display: block;
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
 }
 
 .site-navigation {
@@ -473,6 +483,17 @@ body.interior-page {
 .site-footer p {
     margin: 0;
     font-size: 13px;
+}
+
+.senac-link {
+    display: inline-flex;
+    align-items: center;
+}
+
+.senac-link img {
+    display: block;
+    max-width: 140px;
+    height: auto;
 }
 
 .footer-links {

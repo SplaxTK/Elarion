@@ -15,7 +15,10 @@ $homeLink = static fn (string $section): string => $isHomePage ? '#' . $section 
 ?>
 <header class="topbar">
     <div class="topbar-branding">
-        <a class="site-logo" href="<?= htmlspecialchars($homeLink('inicio'), ENT_QUOTES, 'UTF-8') ?>" aria-label="Elarion, início">ELARION</a>
+        <a class="site-logo" href="<?= htmlspecialchars($homeLink('inicio'), ENT_QUOTES, 'UTF-8') ?>" aria-label="Elarion, início">
+            <img class="site-logo-icon" src="<?= htmlspecialchars(relativeSiteUrl('assents/img/logo-elarion.png'), ENT_QUOTES, 'UTF-8') ?>" alt="">
+            <span>ELARION</span>
+        </a>
     </div>
     <nav class="site-navigation" aria-label="Navegação principal">
         <a href="<?= htmlspecialchars($homeLink('inicio'), ENT_QUOTES, 'UTF-8') ?>">Início</a>

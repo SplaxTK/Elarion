@@ -81,8 +81,8 @@
     <footer class="site-footer">
         <a class="site-logo" href="#inicio">ELARION</a>
         <p>&copy; 2026 Elarion. Todos os direitos reservados.</p>
-        <a class="button button-outline" href="https://portal.sc.senac.br/" target="_blank">
-            <img src="./assents/images/senac-logo.png" alt="Portal do SENAC">
+        <a class="senac-link" href="https://portal.sc.senac.br/" target="_blank" rel="noopener noreferrer" aria-label="Portal do SENAC">
+            <img src="<?= htmlspecialchars(relativeSiteUrl('assents/img/senac-logo.png'), ENT_QUOTES, 'UTF-8') ?>" alt="">
         </a>
         <div class="footer-links">
             <a href="./termos/termos.php">Termos de Uso</a>
