@@ -81,9 +81,14 @@
     <footer class="site-footer">
         <a class="site-logo" href="#inicio">ELARION</a>
         <p>&copy; 2026 Elarion. Todos os direitos reservados.</p>
-        <a class="senac-link" href="https://portal.sc.senac.br/" target="_blank" rel="noopener noreferrer" aria-label="Portal do SENAC">
-            <img src="<?= htmlspecialchars(relativeSiteUrl('assents/img/senac-logo.png'), ENT_QUOTES, 'UTF-8') ?>" alt="">
-        </a>
+        <div class="botoes-redes">
+            <a class="insta-link" href="https://www.instagram.com/2infosnc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram do SENAC">
+                <img src="<?= htmlspecialchars(relativeSiteUrl('assents\img\Instagram-icon.jfif'), ENT_QUOTES, 'UTF-8') ?>" alt="Instagram">
+            </a>
+            <a class="senac-link" href="https://portal.sc.senac.br/" target="_blank" rel="noopener noreferrer" aria-label="Portal do SENAC">
+                <img src="<?= htmlspecialchars(relativeSiteUrl('assents/img/senac-logo.png'), ENT_QUOTES, 'UTF-8') ?>" alt="">
+            </a>
+        </div>
         <div class="footer-links">
             <a href="./termos/termos.php">Termos de Uso</a>
             <a href="./termos/politica.php">Política de Privacidade</a>

@@ -367,7 +367,7 @@ body.interior-page {
 .world-image {
     min-height: 360px;
     border: 1px solid rgb(255 255 255 / 15%);
-    background: #141b24 url("../img/entrada-elarion2.png") center / cover no-repeat;
+    background: #141b24 url("../img/entrada-elarion3.png") center / cover no-repeat;
     box-shadow: 0 24px 60px rgb(0 0 0 / 28%);
 }
 
@@ -429,7 +429,7 @@ body.interior-page {
     place-items: center;
     padding: 76px 24px;
     box-sizing: border-box;
-    background: #17181b url("../img/teste2.jfif") center 58% / cover no-repeat;
+    background: #17181b url("../img/cidade-elarion.png") center 58% / cover no-repeat;
     color: #fff;
     text-align: center;
 }
@@ -491,9 +491,34 @@ body.interior-page {
 }
 
 .senac-link img {
-    display: block;
-    max-width: 140px;
+    max-width: 40px;
+    display: flex;
     height: auto;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.senac-link img:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.insta-link img {
+    max-width: 30px;
+    display: flex;
+    height: auto;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.insta-link img:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.botoes-redes {
+    display: flex;
+    gap: 25px;
 }
 
 .footer-links {
