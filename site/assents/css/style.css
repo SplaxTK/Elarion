@@ -685,7 +685,7 @@ body.interior-page {
 }
 
 .admin-shell {
-    color: #1a1d22;
+    color: #9c7c53;
 }
 
 .admin-header {
@@ -857,7 +857,7 @@ body.interior-page {
 
 .admin-stats span {
     display: block;
-    color: #5d636c;
+    color: #969699;
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
