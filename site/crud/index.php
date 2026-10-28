@@ -1,8 +1,4 @@
 <?php
 
-declare(strict_types=1);
-
-require_once __DIR__ . '/../includes/auth.php';
-requireAdmin();
-
-require __DIR__ . '/../admin/index.php';
+header('Location: ../admin/index.php', true, 302);
+exit;
