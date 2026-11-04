@@ -41,7 +41,6 @@ $homeLink = static fn (string $section): string => $isHomePage ? '#' . $section 
                     <p class="user-menu-name"><?= htmlspecialchars($userUsername) ?></p>
                     <span class="user-menu-role"><?= htmlspecialchars($currentUser['role']) ?></span>
                     <a href="<?= htmlspecialchars(relativeSiteUrl('profile.php')) ?>" role="menuitem">Meu perfil</a>
-                    <a href="<?= htmlspecialchars(relativeSiteUrl('configuracoes.php')) ?>" role="menuitem">Configurações da conta</a>
                     <?php if (isAdmin()): ?>
                         <a href="<?= htmlspecialchars(relativeSiteUrl('crud/index.php')) ?>" rel="noopener noreferrer" role="menuitem">Painel de admin</a>
                     <?php endif; ?>

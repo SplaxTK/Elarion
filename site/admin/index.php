@@ -35,25 +35,32 @@ $query .= ' ORDER BY created_at DESC LIMIT :offset, :limit';
 
 $statement = $pdo->prepare($query);
 
-$params = [];
+$offset = ($page - 1) * $perPage;
+
+$countParams = [];
 if ($searchTerm !== '') {
     $searchPattern = '%' . strtolower($searchTerm) . '%';
-    $params[':username_term'] = $searchPattern;
-    $params[':email_term'] = $searchPattern;
-    $params[':display_name_term'] = $searchPattern;
+    $countParams[':username_term'] = $searchPattern;
+    $countParams[':email_term'] = $searchPattern;
+    $countParams[':display_name_term'] = $searchPattern;
+
+    $statement->bindValue(':username_term', $searchPattern, PDO::PARAM_STR);
+    $statement->bindValue(':email_term', $searchPattern, PDO::PARAM_STR);
+    $statement->bindValue(':display_name_term', $searchPattern, PDO::PARAM_STR);
 }
 if ($roleFilter !== 'ALL') {
-    $params[':role'] = $roleFilter;
+    $countParams[':role'] = $roleFilter;
+    $statement->bindValue(':role', $roleFilter, PDO::PARAM_STR);
 }
 if ($statusFilter !== 'ALL') {
-    $params[':status'] = $statusFilter;
+    $countParams[':status'] = $statusFilter;
+    $statement->bindValue(':status', $statusFilter, PDO::PARAM_STR);
 }
-$countParams = $params;
-$offset = ($page - 1) * $perPage;
-$params[':offset'] = $offset;
-$params[':limit'] = $perPage;
 
-$statement->execute($params);
+$statement->bindValue(':offset', $offset, PDO::PARAM_INT);
+$statement->bindValue(':limit', $perPage, PDO::PARAM_INT);
+
+$statement->execute();
 $users = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 $totalCountStatement = $pdo->prepare('SELECT COUNT(*) FROM usuarios' . ($filters ? ' WHERE ' . implode(' AND ', $filters) : ''));
@@ -76,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $targetId = (int) ($_POST['user_id'] ?? 0);
-    $newStatus = in_array($_POST['status'] ?? '', ['ACTIVE', 'INACTIVE'], true) ? $_POST['status'] : 'ACTIVE';
+    $action = $_POST['action'] ?? '';
 
     if ($targetId <= 0) {
         setFlash('error', 'Usuário inválido.');
@@ -85,27 +92,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $currentUser = currentUser();
     $userRecord = getUserById($targetId);
+
     if (!$userRecord) {
         setFlash('error', 'Usuário não encontrado.');
         redirect('index.php');
     }
 
-    $newRole = isAdminEmail($userRecord['email']) ? 'ADMIN' : 'USER';
+    // Ação de Excluir
+    if ($action === 'delete') {
+        if ((int) $userRecord['id'] === (int) $currentUser['id']) {
+            setFlash('error', 'Você não pode excluir a própria conta de administrador.');
+            redirect('index.php');
+        }
 
-    if ((int) $userRecord['id'] === (int) $currentUser['id'] && ($newRole !== 'ADMIN' || $newStatus !== 'ACTIVE')) {
-        setFlash('error', 'Você não pode remover nem desativar o próprio acesso de administrador.');
+        $statement = $pdo->prepare('DELETE FROM usuarios WHERE id = :id');
+        $statement->execute([':id' => $targetId]);
+
+        logAdminAction((int) $currentUser['id'], 'delete_user', 'Excluiu o usuário #' . $targetId);
+        setFlash('success', 'Usuário excluído com sucesso.');
         redirect('index.php');
     }
 
-    $statement = $pdo->prepare('UPDATE usuarios SET role = :role, status = :status, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
-    $statement->execute([
-        ':role' => $newRole,
-        ':status' => $newStatus,
-        ':id' => $targetId,
-    ]);
-
-    logAdminAction((int) $currentUser['id'], 'update_user', 'Atualizou usuário #' . $targetId . ' para role=' . $newRole . ' status=' . $newStatus);
-    setFlash('success', 'Permissões do usuário atualizadas com sucesso.');
+    setFlash('error', 'Ação inválida.');
     redirect('index.php');
 }
 
@@ -197,15 +205,12 @@ $flashMessages = getFlash();
                                         <span class="status-badge status-<?= strtolower($user['status']) ?>"><?= htmlspecialchars($user['status']) ?></span>
                                     </td>
                                     <td>
-                                        <form method="post" class="inline-form">
+                                        <a class="button button-outline" href="editar.php?id=<?= (int) $user['id'] ?>">Editar</a>
+                                        <form method="post" class="inline-form" onsubmit="return confirm('Tem certeza que deseja excluir este usuário? Esta ação não pode ser desfeita.');" style="display:inline-block; margin-left: 8px;">
                                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
                                             <input type="hidden" name="user_id" value="<?= (int) $user['id'] ?>">
-                                            <span><?= isAdminEmail($user['email']) ? 'ADMIN' : 'USER' ?></span>
-                                            <select name="status">
-                                                <option value="ACTIVE" <?= $user['status'] === 'ACTIVE' ? 'selected' : '' ?>>ACTIVE</option>
-                                                <option value="INACTIVE" <?= $user['status'] === 'INACTIVE' ? 'selected' : '' ?>>INACTIVE</option>
-                                            </select>
-                                            <button class="button button-outline" type="submit">Salvar</button>
+                                            <input type="hidden" name="action" value="delete">
+                                            <button class="button button-outline" type="submit" style="color: #d9534f; border-color: #d9534f;">Excluir</button>
                                         </form>
                                     </td>
                                 </tr>

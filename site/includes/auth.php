@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 require_once dirname(__DIR__, 2) . '/config/database.php';
-require_once dirname(__DIR__, 2) . '/config/admin_acounts.php';
+require_once dirname(__DIR__, 2) . '/config/admin_accounts.php';
+require_once dirname(__DIR__) . '/admin/admin_accounts.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     if ($pdo instanceof PDO) {
@@ -110,16 +111,6 @@ function isAdmin(): bool
     $user = currentUser();
 
     return $user !== null && isAdminEmail($user['email']);
-}
-
-function isAdminEmail(string $email): bool
-{
-    $adminEmails = array_map(
-        static fn (string $configuredEmail): string => strtolower(trim($configuredEmail)),
-        ELARION_ADMIN_EMAILS,
-    );
-
-    return in_array(strtolower(trim($email)), $adminEmails, true);
 }
 
 function setFlash(string $type, string $message): void
