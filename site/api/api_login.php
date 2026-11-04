@@ -1,11 +1,8 @@
 <?php
-
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type, Accept, Origin, User-Agent');
-
 declare(strict_types=1);
-
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 
