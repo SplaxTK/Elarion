@@ -195,9 +195,10 @@ body.interior-page {
 }
 
 .hero-logo {
-    width: 540px;
-    height: 330px;
-    margin-bottom: 24px;
+    display: block;
+    width: min(100%, 540px);
+    height: auto;
+    margin: 0 auto 24px;
     border-radius: 50%;
 }
 
@@ -466,14 +467,47 @@ body.interior-page {
 }
 
 .site-footer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
+    display: block;
     padding: 26px clamp(24px, 5vw, 76px);
     background: #0b0e12;
     color: #b6b9bd;
+}
+
+.site-footer .footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-info,
+.footer-links,
+.botoes-redes {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.footer-info {
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.footer-links {
+    flex: 1.5 1 0;
+    justify-content: center;
+    text-align: center;
+    min-width: 0;
+}
+
+.botoes-redes {
+    flex: 1 1 0;
+    justify-content: flex-end;
 }
 
 .site-footer .site-logo {
@@ -1131,10 +1165,16 @@ body.interior-page {
     border: 0;
     border-radius: 13px;
     background: #e5e6eb;
-    color: #777b87;
+    color: #55575e;
     font: inherit;
     font-weight: 600;
     cursor: pointer;
+}
+
+.auth-submit:hover,
+.auth-submit:focus-visible {
+    background: #d1d3da;
+    color: #2b2c31;
 }
 
 .auth-links {
@@ -1288,6 +1328,10 @@ body.escuro .topbar {
         padding-inline: 20px;
     }
 
+    .hero-logo {
+        width: min(100%, 320px);
+    }
+
     .hero-caption {
         right: 20px;
         left: 20px;
@@ -1302,9 +1346,40 @@ body.escuro .topbar {
         min-height: 230px;
     }
 
+    .feature-card {
+        min-height: unset;
+        padding: 22px 18px;
+    }
+
     .site-footer {
+        padding-inline: 20px;
+    }
+
+    .site-footer .footer-container {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .footer-info,
+    .footer-links,
+    .botoes-redes {
+        width: 100%;
+    }
+
+    .footer-links,
+    .botoes-redes {
+        justify-content: center;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        text-align: left;
+    }
+
+    .botoes-redes {
+        justify-content: flex-start;
     }
 }
 

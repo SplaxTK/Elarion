@@ -64,8 +64,8 @@
             <div class="news-content">
                 <p class="eyebrow">Jogo</p>
                 <h2 id="news-title">Novidades sobre o Jogo</h2>
-                <p>Versão 1.0 disponível para download!</p>
-                <a class="button button-outline" href="index.php" target="_blank">Sobre o Jogo</a>
+                <p>Versão de teste beta!</p>
+            <a class="button button-outline" target="_blank" onclick="event.preventDefault(); alert('Jogo ainda em fase de teste!');" >Baixe aqui!</a>
             </div>
         </section>
 
@@ -78,20 +78,27 @@
             <a class="button button-primary" href="#inicio">Voltar ao Início</a>
         </section>
     </main>
-    <footer class="site-footer">
-        <a class="site-logo" href="#inicio">ELARION</a>
-        <p>&copy; 2026 Elarion. Todos os direitos reservados.</p>
+<footer class="site-footer">
+    <div class="footer-container">
+
+        <div class="footer-info">
+            <a class="site-logo" href="#inicio">ELARION</a>
+            <p>&copy; 2026 Elarion. Todos os direitos reservados.</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="./termos/termos.php">Termos de Uso</a>
+            <a href="./termos/politica.php">Política de Privacidade</a>
+        </div>
+
         <div class="botoes-redes">
             <a class="insta-link" href="https://www.instagram.com/2infosnc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram do SENAC">
                 <img src="<?= htmlspecialchars(relativeSiteUrl('assents\img\instagram-icon.jfif'), ENT_QUOTES, 'UTF-8') ?>" alt="Instagram">
             </a>
             <a class="senac-link" href="https://portal.sc.senac.br/" target="_blank" rel="noopener noreferrer" aria-label="Portal do SENAC">
-                <img src="<?= htmlspecialchars(relativeSiteUrl('assents/img/senac-logo.png'), ENT_QUOTES, 'UTF-8') ?>" alt="">
+                <img src="<?= htmlspecialchars(relativeSiteUrl('assents/img/senac-logo.png'), ENT_QUOTES, 'UTF-8') ?>" alt="Logo SENAC">
             </a>
         </div>
-        <div class="footer-links">
-            <a href="./termos/termos.php">Termos de Uso</a>
-            <a href="./termos/politica.php">Política de Privacidade</a>
-        </div>
-    </footer>
+    </div>
+</footer>
 </body>
