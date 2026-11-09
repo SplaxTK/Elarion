@@ -1,15 +1,32 @@
 <?php
-
 declare(strict_types=1);
-
+ 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Accept, Origin, User-Agent');
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
-
+ 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+ 
 function respond(array $data, int $code = 200): never
 {
     http_response_code($code);
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit;
+}
+ 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    respond(['status' => 'error', 'message' => 'Método inválido.'], 405);
+}
+ 
+require_once dirname(__DIR__, 2) . '/config/database.php';
+ 
+if (!$pdo) {
+    respond(['status' => 'error', 'message' => 'Servidor indisponível. Tente novamente.'], 503);
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
