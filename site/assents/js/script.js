@@ -121,7 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     overlay.addEventListener('click', (event) => {
         if (event.target === overlay) {
-            closeDialog();
+            const bounds = dialog.getBoundingClientRect();
+            const distanceX = Math.max(bounds.left - event.clientX, 0, event.clientX - bounds.right);
+            const distanceY = Math.max(bounds.top - event.clientY, 0, event.clientY - bounds.bottom);
+
+            if (Math.hypot(distanceX, distanceY) >= 80) {
+                closeDialog();
+            }
         }
     });
 
